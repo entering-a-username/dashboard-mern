@@ -1,0 +1,68 @@
+// after 600px
+@media screen and (min-width: 600px) {
+    nav {
+        .language-item, .search {
+            display: flex !important;
+        }
+    }
+
+    .widgets {
+        justify-content: space-between;
+    }
+}
+
+// after 800px
+@media screen and (min-width: 800px) {
+    .charts {
+        flex-direction: row !important;
+
+        .chart {
+            max-width: 700px;
+            height: fit-content;
+        }
+    }
+
+    .chart-hover {
+        flex-direction: row !important;
+
+        .bar-chart {
+            width: 70%;
+        }
+    }
+
+    .single-container {
+        .top {
+            flex-direction: row !important;
+
+            .right {
+                max-width: 800px;
+            }
+        }
+    }
+}
+
+// after 900px
+@media screen and (min-width: 900px) {
+    .App {
+        flex-direction: row;
+    }
+    
+    nav {
+
+        .hamburger-menu {
+            display: none !important;
+        }
+    }
+
+    .sidebar {
+        flex-grow: 2 !important;
+        transition: none;
+        left: 0 !important;
+        position: sticky !important;
+        width: 20% !important;
+    }
+
+    .container {
+        width: auto;
+    }
+}

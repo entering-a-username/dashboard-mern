@@ -1,20 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-
-// import { ColorModeContext, tokens } from "../theme";
-// import { CssBaseline, ThemeProvider } from "@mui/material";
-
-import { useLocation } from 'react-router-dom';
-import {RiGroup2Fill, RiCalendarFill, RiUserFill, RiLogoutBoxFill, RiNewsFill, RiSettings2Fill, RiBarChart2Fill, RiUbuntuFill, RiDashboardFill, RiProductHuntFill, RiOrderPlayFill, RiTruckFill, RiNotification2Fill} from "@remixicon/react";
-// import { useTheme } from '@emotion/react';
+import React from 'react';
 
 import { useStateContext } from '../ContextProvider';
+import { useLocation } from 'react-router-dom';
+import {RiGroup2Fill, RiAdminFill, RiPieChart2Fill, RiEarthFill, RiBarChart2Fill, RiDashboardFill, RiProductHuntFill, RiOrderPlayFill} from "@remixicon/react";
 
 export default function Sidebar({className}) {
-  // const theme = useTheme();
-  // const colors = tokens(theme.palette.mode);
-  // const colorMode = useContext(ColorModeContext);
-
-  const { theme, changeTheme } = useStateContext();
+  const { changeTheme, palette } = useStateContext();
 
   function handleThemeChange(theme) {
     changeTheme(theme);
@@ -27,11 +18,10 @@ export default function Sidebar({className}) {
 }
 
   const location = useLocation();
-  // give it right shadow
 
   return (
     <div className={`sidebar ${className}`}>
-      <a className="logo-href" href="/"><span className="logo">dashboard</span></a>
+      <a style={{color: palette.blue_accent[200]}} className="logo-href" href="/"><span className="logo">dashboard</span></a>
 
       <hr />
 
@@ -41,73 +31,47 @@ export default function Sidebar({className}) {
         <ul>
           <p className="title">MAIN</p>
           <li className={`${location.pathname === '/' ? 'active' : ''}`}>
-            <RiDashboardFill className="icon" />
+            <RiDashboardFill color={palette.blue_accent[400]} className="icon" />
             <a href="/"><span>Dashboard</span></a>
           </li>
 
           <p className="title">LISTS</p>
           <li className={`${location.pathname === '/users' ? 'active' : ''}`}>
-            <RiGroup2Fill className="icon" />
+            <RiGroup2Fill color={palette.blue_accent[400]} className="icon" />
             <a href="/users"><span>Users</span></a>
           </li>
 
           <li className={`${location.pathname === '/products' ? 'active' : ''}`}>
-            <RiProductHuntFill className="icon" />
+            <RiProductHuntFill color={palette.blue_accent[400]} className="icon" />
             <a href="/products"><span>Products</span></a>
           </li>
 
-          <li className={`${location.pathname === '/orders' ? 'active' : ''}`}>
-            <RiOrderPlayFill className="icon" />
-            <a href="/orders"><span>Orders</span></a>
+          <li className={`${location.pathname === '/admins' ? 'active' : ''}`}>
+            <RiAdminFill color={palette.blue_accent[400]} className="icon" />
+            <a href="/admins"><span>Admins</span></a>
           </li>
 
-          <li className={`${location.pathname === '/delivery' ? 'active' : ''}`}>
-            <RiTruckFill className="icon" />
-            <a href="/delivery"><span>Delivery</span></a>
+          <li className={`${location.pathname === '/transactions' ? 'active' : ''}`}>
+            <RiOrderPlayFill color={palette.blue_accent[400]} className="icon" />
+            <a href="/transactions"><span>Transactions</span></a>
           </li>
 
-          <p className="title">USEFUL</p>
-          <li className={`${location.pathname === '/stats' ? 'active' : ''}`}>
-            <RiBarChart2Fill className="icon" />
-            <a href="/stats"><span>Stats</span></a>
+          <p className="title">STATS</p>
+          <li className={`${location.pathname === '/overview' ? 'active' : ''}`}>
+            <RiBarChart2Fill color={palette.blue_accent[400]} className="icon" />
+            <a href="/overview"><span>Overview</span></a>
           </li>
 
-          <li className={`${location.pathname === '/notifications' ? 'active' : ''}`}>
-            <RiNotification2Fill className="icon" />
-            <a href="/notifications"><span>Notifications</span></a>
+          <li className={`${location.pathname === '/geography' ? 'active' : ''}`}>
+            <RiEarthFill color={palette.blue_accent[400]} className="icon" />
+            <a href="/geography"><span>Geography</span></a>
           </li>
 
-          <li className={`${location.pathname === '/calendar' ? 'active' : ''}`}>
-            <RiCalendarFill className="icon" />
-            <a href="/calendar"><span>Calendar</span></a>
+          <li className={`${location.pathname === '/breakdown' ? 'active' : ''}`}>
+            <RiPieChart2Fill color={palette.blue_accent[400]} className="icon" />
+            <a href="/breakdown"><span>Breakdown</span></a>
           </li>
 
-          <p className="title">SERVICE</p>
-          <li>
-            <RiUbuntuFill className="icon" />
-            <span>System Health </span>
-          </li>
-
-          <li>
-            <RiNewsFill className="icon" />
-            <span>Logs</span>
-          </li>
-
-          <li>
-            <RiSettings2Fill className="icon" />
-            <span>Settings</span>
-          </li>
-
-          <p className="title">USER</p>
-          <li className={`${location.pathname === '/profile' ? 'active' : ''}`}>
-            <RiUserFill className="icon" />
-            <a href="/profile"><span>Profile</span></a>
-          </li>
-
-          <li>
-            <RiLogoutBoxFill className="icon" />
-            <span>Logout</span>
-          </li>
         </ul>
       </div>
 

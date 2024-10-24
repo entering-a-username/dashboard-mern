@@ -41,7 +41,7 @@ export default function Chart({ aspect, title }) {
           <option value="last-5years">Last 5 years</option>
         </select>
 
-        <span>SALES REPORT <RiArrowRightSLine /> </span>
+        <span><a href="/overview">SALES REPORT <RiArrowRightSLine /></a> </span>
       </div>
     </div>
   )

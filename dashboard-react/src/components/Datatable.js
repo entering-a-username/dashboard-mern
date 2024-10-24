@@ -1,32 +1,118 @@
 import React from 'react';
 
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../info/datatablesource";
+
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
+import { useStateContext } from '../ContextProvider';
 
-export default function Datatable({ type }) {
-    const [data, setData] = useState(userRows);
+export default function Datatable({ type, columns }) {
+  const { palette } = useStateContext();
 
-    function del(id) {
-      setData(data.filter((item) => item.id !== id));
+  const [fetchedData, setFetchedData] = useState([]);
+  const [flashMessage, setFlashMessage] = useState("");
+  const [deleted, setDeleted] = useState(false);
+  
+  useEffect(() => {
+    async function fetchAPI() {
+      let data;
+      if (type === "product") {
+        const res = await fetch("http://localhost:3050/api/products");
+        data = await res.json();
+        data = data.slice(1).map((item, index) => {
+          item.price = `${Math.ceil(item.price)} $`;
+          item.createdAt = new Date(item.createdAt).toLocaleDateString();
+          
+          return ({
+            ...item,
+            id: index + 1,
+          })
+        })
+
+        setFetchedData(data);
+      } else if (type === "user") {
+        const res = await fetch("http://localhost:3050/api/users");
+        data = await res.json();
+
+        data = data.slice(1).map((user, index) => {
+          user.createdAt = new Date(user.createdAt).toLocaleDateString();
+          
+          return ({
+            ...user,
+            id: index + 1,
+          })
+        })
+
+        setFetchedData(data);
+      } else if (type === "admin") {
+        const res = await fetch("http://localhost:3050/api/admins");
+        data = await res.json();
+
+        data = data.slice(1).map((user, index) => {
+          user.createdAt = new Date(user.createdAt).toLocaleDateString();
+          
+          return ({
+            ...user,
+            id: index + 1,
+          })
+        })
+        
+        setFetchedData(data);
+      } else if (type === "transaction") {
+        const res = await fetch(`http://localhost:3050/api/transactions`);
+        data = await res.json();
+        console.log(data.transactions)
+
+        data = data.transactions.map((user, index) => {
+          return ({
+            ...user,
+            id: index + 1,
+          })
+        })
+        console.log(data)
+        setFetchedData(data);
+      }
+    }
+    fetchAPI();
+  }, [])
+
+    async function del(id) {
+      const res = await fetch(`http://localhost:3050/api/${type}/${id}`);
+      const data = await res.json();
+      // flash message
+      if (data.deleted) {
+        setDeleted(true);
+        setFlashMessage(`${type} deleted successfully`);
+
+        setTimeout(() => {
+          setFlashMessage("");
+        }, 4000);
+
+        setFetchedData(fetchedData.filter((item) => item.id !== id));
+      } else {
+        setDeleted(false);
+        setFlashMessage(`Couldn't delete ${type}`);
+        setTimeout(() => {
+          setFlashMessage("");
+        }, 4000);
+      }
     }
   
-    const actionColumn = [
+    const actionColumn = [ 
       {
         field: "action",
         headerName: "Action",
-        width: 200,
+        width: 130,
         renderCell: (params) => {
           return (
             <div className="cellAction">
-              <Link to="/users/test" style={{ textDecoration: "none" }}>
-                <div className="viewButton">View</div>
-              </Link>
               <div
                 className="deleteButton"
-                onClick={() => del(params.row.id)}
+                onClick={() => {
+                  console.log(params)
+                  del(params.id)
+                }}
               >
                 Delete
               </div>
@@ -38,16 +124,19 @@ export default function Datatable({ type }) {
 
   return (
     <div className="datatable">
+      {flashMessage && <h1>{flashMessage}</h1>}
+
       <div className="datatableTitle">
         Add new {type}
         <Link to={`/${type}s/new`} className="link">
           Add New
         </Link>
       </div>
+
       <DataGrid
         className="datagrid"
-        rows={data}
-        columns={userColumns.concat(actionColumn)}
+        rows={fetchedData}
+        columns={columns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

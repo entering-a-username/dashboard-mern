@@ -1,21 +1,21 @@
 export const userInputs = [
     {
       id: 1,
-      label: "Username",
+      label: "Name",
       type: "text",
-      placeholder: "john_doe",
+      placeholder: "John",
     },
     {
       id: 2,
-      label: "Name and surname",
+      label: "Country",
       type: "text",
-      placeholder: "John Doe",
+      placeholder: "USA",
     },
     {
       id: 3,
-      label: "Email",
-      type: "mail",
-      placeholder: "john_doe@gmail.com",
+      label: "State",
+      type: "text",
+      placeholder: "State",
     },
     {
       id: 4,
@@ -30,16 +30,16 @@ export const userInputs = [
     },
     {
       id: 6,
-      label: "Address",
+      label: "Occupation",
       type: "text",
-      placeholder: "Elton St. 216 NewYork",
+      placeholder: "Software Engineer",
     },
     {
       id: 7,
-      label: "Country",
-      type: "text",
-      placeholder: "USA",
-    },
+      label: "Email",
+      type: "mail",
+      placeholder: "john_doe@gmail.com",
+    }
 ];
   
 export const productInputs = [

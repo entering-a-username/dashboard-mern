@@ -29,6 +29,10 @@ input {
     outline: none; 
 }
 
+.capitalize {
+    text-transform: capitalize;
+}
+
 .App {
     display: flex;
     width: 100%;
@@ -375,7 +379,19 @@ main {
     }
 }
 
-// C A L E N D A R
+// 404
+.not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotateY(50%);
+    height: 100vh;
+    flex-direction: column;
+
+    h1 {
+        font-size: 4.5em;
+    }
+}
 
 
 @import "./dark.scss";

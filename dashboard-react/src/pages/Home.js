@@ -1,15 +1,11 @@
 import React from 'react';
 
 import Widget from '../components/Widget';
-import Featured from '../components/Featured';
-import Chart from '../components/Chart';
+import Featured from '../components/charts/Featured';
+import Chart from '../components/charts/Chart';
 import Table from '../components/Table';
-import DateRange from '../components/DateRange';
-import BarChart from '../components/BarChart';
-import ProgressChart from '../components/ProgressChart';
-
-import { RiDownloadLine } from "@remixicon/react";
-
+import BarChart from '../components/charts/BarChart';
+import ProgressChart from '../components/charts/ProgressChart';
 
 export default function Home() {
     
@@ -19,13 +15,7 @@ export default function Home() {
 
             <div className="welcome">
                 <h1>Welcome to your dashboard</h1>
-                <button><RiDownloadLine size={14} /> DOWNLOAD REPORTS </button>
             </div>
-
-            <div className="date-range">
-                <DateRange />
-            </div>
-
 
             <div className="widgets">
                 <Widget type="user" />

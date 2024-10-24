@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Chart from './../components/Chart';
+import Chart from './../components/charts/Chart';
 import Table1 from './../components/Table';
 
 export default function Single() {
@@ -12,7 +12,6 @@ export default function Single() {
         <div className="top">
 
           <div className="left">
-            <div className="edit-btn">edit</div>
             <h1 className="title">Information</h1>
             <div className="item">
               <img src="https://picsum.photos/200/300" alt="" />

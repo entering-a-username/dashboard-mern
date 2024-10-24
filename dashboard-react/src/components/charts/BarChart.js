@@ -1,6 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from "recharts";
 
 import { RiArrowDownSLine } from "@remixicon/react";
 
@@ -52,7 +51,6 @@ export default function BarChart1() {
           profit: 78,
         },
     ];
-
 
     function formatTooltipValue(value) {
         return `${value}k`;

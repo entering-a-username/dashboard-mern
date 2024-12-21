@@ -15,7 +15,7 @@ export default function Sidebar({className}) {
     } else {
         document.body.classList.remove("dark");
     }
-}
+  }
 
   const location = useLocation();
 
@@ -26,8 +26,6 @@ export default function Sidebar({className}) {
       <hr />
 
       <div className="center">
-        {/* hrefs and not Links because i need to restart to close sidebar */}
-        
         <ul>
           <p className="title">MAIN</p>
           <li className={`${location.pathname === '/' ? 'active' : ''}`}>
@@ -36,25 +34,32 @@ export default function Sidebar({className}) {
           </li>
 
           <p className="title">LISTS</p>
-          <li className={`${location.pathname === '/users' ? 'active' : ''}`}>
+          <li className={`${location.pathname === '/list/user' ? 'active' : ''}`}>
             <RiGroup2Fill color={palette.blue_accent[400]} className="icon" />
-            <a href="/users"><span>Users</span></a>
+            <a href="/list/user"><span>Users</span></a>
           </li>
 
-          <li className={`${location.pathname === '/products' ? 'active' : ''}`}>
+          <li className={`${location.pathname === '/list/product' ? 'active' : ''}`}>
             <RiProductHuntFill color={palette.blue_accent[400]} className="icon" />
-            <a href="/products"><span>Products</span></a>
+            <a href="/list/product"><span>Products</span></a>
           </li>
 
-          <li className={`${location.pathname === '/admins' ? 'active' : ''}`}>
-            <RiAdminFill color={palette.blue_accent[400]} className="icon" />
-            <a href="/admins"><span>Admins</span></a>
-          </li>
-
-          <li className={`${location.pathname === '/transactions' ? 'active' : ''}`}>
+          <li className={`${location.pathname === '/list/subcategory' ? 'active' : ''}`}>
             <RiOrderPlayFill color={palette.blue_accent[400]} className="icon" />
-            <a href="/transactions"><span>Transactions</span></a>
+            <a href="/list/subcategory"><span>Sub Categories</span></a>
           </li>
+
+          
+          <li className={`${location.pathname === '/list/category' ? 'active' : ''}`}>
+            <RiOrderPlayFill color={palette.blue_accent[400]} className="icon" />
+            <a href="/list/category"><span>Categories</span></a>
+          </li>
+
+          <li className={`${location.pathname === '/list/admin' ? 'active' : ''}`}>
+            <RiAdminFill color={palette.blue_accent[400]} className="icon" />
+            <a href="/list/admin"><span>Admins</span></a>
+          </li>
+
 
           <p className="title">STATS</p>
           <li className={`${location.pathname === '/overview' ? 'active' : ''}`}>

@@ -8,7 +8,7 @@ export default function List({ type }) {
   return (
     <>
     {type === "user" && (
-      <div className="list">
+    <div className="list">
       <div className="list-container">
         <Datatable type={type} columns={userColumns} />
       </div>
@@ -36,7 +36,7 @@ export default function List({ type }) {
         <div className="list-container">
           <Datatable type={type} columns={transactionColumns} />
         </div>
-      </div>
+      </div> 
     )}
     </>
   )

@@ -75,3 +75,17 @@ export const productInputs = [
     },
 ];
   
+export const categoryInputs = [
+  {
+    id: 1,
+    label: "name",
+    type: "text",
+    placeholder: "Computers",
+  },
+  {
+    id: 2,
+    label: "color",
+    type: "text",
+    placeholder: "Color",
+  },
+];

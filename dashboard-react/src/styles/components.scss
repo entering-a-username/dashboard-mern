@@ -4,7 +4,7 @@ nav {
     border-bottom: .5px solid lightgray;
     display: flex;
     align-items: center;
-    padding: 5px 20px;
+    padding: 30px 20px;
     font-size: 14px;
     color: #555;
     justify-content: space-between;
@@ -13,8 +13,9 @@ nav {
         display: flex;
         align-items: center;
         border: .5px solid lightgray;
-        padding: 3px;
+        padding: 8px;
         width: 200px;
+        border-radius: 10px;
         position: relative;
 
         .search-card {
@@ -122,6 +123,19 @@ nav {
             margin-right: 20px;
             position: relative;
 
+            &.user {
+                border: 2px solid red;
+                border-radius: 50%;
+                padding: 5px 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                
+                span {
+                    font-size: 1.2em;
+                }
+            }
             
 
             .hover-card {
@@ -769,5 +783,93 @@ nav {
         width: 0;
         border-radius: 100vh;
         background-color: rgb(105, 50, 113);
+    }
+}
+
+
+
+// C U S T O M  T A B L E
+table {
+    border-collapse: collapse;
+    width: 100%;
+    // min-width: 300px;
+    overflow-x: scroll;
+
+    &.product {
+        margin-left: 300%;
+    }
+
+    &.subcategory {
+        margin-left: 10%;
+    }
+
+    &.category {
+        margin-left: 50%;
+    }
+
+    td {
+        img {
+            width: 100px;
+            aspect-ratio: 1 / 1;
+        }
+    }
+
+    td, th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        padding-left: 13px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #ddd;
+    }
+
+    th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #04AA6D;
+        color: white;
+    }
+
+    .actions {
+        width: 40%;
+        display: flex;
+        transform: translateY(-50%);
+        margin-top: 50%;
+        align-items: center;
+        column-gap: 3px;
+        
+        div {
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2px 3px;
+            border-radius: 2px;
+
+            svg {
+                width: 20px;
+            }
+        }
+
+        div:nth-child(1) {
+            background-color: rgb(224, 184, 224);
+            color: purple;
+        }
+
+        div:nth-child(2) {
+            background-color: rgb(178, 244, 178);
+            color: green;
+        }
+
+        div:nth-child(3) {
+            background-color: rgb(242, 195, 195);
+            color: red;
+        }
     }
 }

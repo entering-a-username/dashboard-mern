@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './Sidebar';
 import { useStateContext } from '../ContextProvider';
 
+import { Menu, MenuItem } from '@mui/material';
+
 import {RiNotificationLine, RiSearchLine, RiMessageLine} from "@remixicon/react";
 
 
@@ -17,7 +19,7 @@ function HoverCard({ type }) {
     {id: 5, profile: "https://picsum.photos/200/300", name: "John Doe", descr: "@JohnDoe visited your page"},
     {id: 6, profile: "https://picsum.photos/200/300", name: "John Doe", descr: "@JohnDoe sent you a friend request"},
     {id: 7, profile: "https://picsum.photos/200/300", name: "System", descr: "Finish setting up your account"},
-  ];
+  ]; 
 
   const messages = [
     {id: 1, profile: "https://picsum.photos/200/300", name: "Jane Doe", descr: "Very happy to hear back from you..."},
@@ -92,11 +94,10 @@ function SearchCard({ searchTerm }) {
 
 export default function Navbar() {
   const { palette } = useStateContext();
-  console.log(palette)
   
   const [isSidebar, setIsSidebar] = useState(true);
-  
   const [navState, setNavState] = useState(false);
+
   function toggleNav() {
       setNavState(!navState);
   }
@@ -161,6 +162,18 @@ export default function Navbar() {
     };
   }, [showNotifications, showMessages, isSearching]);
   
+
+  // menu logic
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  function handleClick(e) {
+    setAnchorEl(e.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
   return (
     <>
         <nav>
@@ -193,10 +206,14 @@ export default function Navbar() {
                 {showMessages && <HoverCard type="message" />}
               </div>
 
-              <div className="item">
-                <img src="https://picsum.photos/200/300" alt="" className="user" />
+              <div onClick={handleClick} className="item user">
+                <span>L</span>
               </div>
               
+              <Menu anchorEl={anchorEl} open={open} onClose={handleClose} MenuListProps={{'aria-labelledBy': 'basic-button'}}>
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>Logout</MenuItem>
+              </Menu>
             </div>
           
         </nav>

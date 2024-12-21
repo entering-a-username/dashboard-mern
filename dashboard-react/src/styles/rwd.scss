@@ -1,3 +1,35 @@
+@media screen and (min-width: 400px) {
+    table {
+        &.product {
+            margin-left: 290%;
+        }
+    }
+}
+
+@media screen and (min-width: 450px) {
+    table {
+        &.product {
+            margin-left: 280%;
+        }
+    }
+}
+
+@media screen and (min-width: 500px) {
+    table {
+        &.product {
+            margin-left: 280%;
+        }
+    }
+}
+
+@media screen and (min-width: 550px) {
+    table {
+        &.product {
+            margin-left: 240%;
+        }
+    }
+}
+
 // after 600px
 @media screen and (min-width: 600px) {
     nav {
@@ -9,10 +41,43 @@
     .widgets {
         justify-content: space-between;
     }
+
+    table {
+        &.category {
+            margin-left: 10%;
+        }
+
+        &.subcategory {
+            margin-left: 0;
+        }
+
+        &.product {
+            margin-left: 950px;
+        }
+    }
+}
+
+@media screen and (min-width: 620px) {
+    table {
+        &.product {
+            margin-left: 950px;
+        }
+    }
 }
 
 // after 800px
 @media screen and (min-width: 800px) {
+
+    table {
+        &.category {
+            margin-left: 0;
+        }
+
+        &.product {
+            margin-left: 700px;
+        }
+    }
+    
     .charts {
         flex-direction: row !important;
 
@@ -43,6 +108,13 @@
 
 // after 900px
 @media screen and (min-width: 900px) {
+
+    table {
+        &.product {
+            margin-left: 700px;
+        }
+    }
+
     .App {
         flex-direction: row;
     }
@@ -64,5 +136,37 @@
 
     .container {
         width: auto;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    table {
+        &.product {
+            margin-left: 600px;
+        }
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    table {
+        &.product {
+            margin-left: 400px;
+        }
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    table {
+        &.product {
+            margin-left: 300px;
+        }
+    }
+}
+
+@media screen and (min-width: 1500px) {
+    table {
+        &.product {
+            margin-left: 200px;
+        }
     }
 }

@@ -8,7 +8,7 @@ export default function Breakdown() {
 
     useEffect(() => {
         async function fetchDataAndFormat() {
-            const res = await fetch("http://localhost:3050/api/sales");
+            const res = await fetch("http://localhost:3030/api/sales");
             const data = await res.json();
 
             const colors = ['#7A1CAC', '#88C273', '#a9E5E8', '#A04747'];

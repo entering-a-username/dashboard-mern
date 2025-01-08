@@ -10,7 +10,7 @@ export default function Geography() {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("http://localhost:3050/api/geography");
+            const res = await fetch("http://localhost:3030/api/geography");
             const data = await res.json();
             
             setFetchedData(data);

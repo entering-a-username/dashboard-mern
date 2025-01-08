@@ -11,6 +11,14 @@ export const columnsInfo = {
       header: ["ID", "Product", "Images", "Description", "Brand", "Price", "Discount", "Category", "Sub Categories", "In Stock", "Sizes", "Rating", "Reviews", "Date Created", "Date Updated"],
       fields: ["", "name", "icons", "description", "brand", "price", "discount", "categories", "subcategories", "countInStock", "sizes", "rating", "numReviews", "createdAt", "updatedAt"],
     },
+    user: {
+      header: ["ID", "First Name", "Email", "Phone", "City", "State", "Country", "Occupation", "Role"],
+      fields: ["", "name", "email", "phoneNumber", "city", "state", "country", "occupation", "role"],
+    },
+    admin: {
+      header: ["ID", "First Name", "Email", "Phone", "City", "State", "Country", "Occupation", "Role"],
+      fields: ["", "name", "email", "phoneNumber", "city", "state", "country", "occupation", "role"],
+    },
     products: ["ID", "Name", "Price", "Stock"],
     transactions: ["ID", "Amount", "Date", "Status"],
 };

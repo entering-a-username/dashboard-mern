@@ -42,7 +42,7 @@ export default function ListSec() {
         <div className="bottom">
             <div className="info">
                 <h1>All {type === "category" ? "Categories" : type === "subcategory" ? "Sub Categories" : `${type}s`}</h1>
-                <button className="add-btn"><Link href={`/${type}/create`}>Add new {type}</Link></button>
+                {type !== "user" && <button className="add-btn"><Link href={`/${type}/create`}>Add new {type}</Link></button>}
                 
                 <div className="filter">
                     <div className="left">

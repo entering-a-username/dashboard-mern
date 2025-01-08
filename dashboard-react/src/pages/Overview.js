@@ -9,7 +9,7 @@ export default function Overview() {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("http://localhost:3050/api/sales");
+            const res = await fetch("http://localhost:3030/api/sales");
             const data = await res.json();
             
             setFetchedData(data);

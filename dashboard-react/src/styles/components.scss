@@ -807,6 +807,14 @@ table {
         margin-left: 50%;
     }
 
+    &.user {
+        margin-left: 600px;
+    }
+
+    &.admin {
+        margin-left: 520px;
+    }
+
     td {
         img {
             width: 100px;

@@ -54,6 +54,14 @@
         &.product {
             margin-left: 950px;
         }
+
+        &.user {
+            margin-left: 470px;
+        }
+
+        &.admin {
+            margin-left: 380px;
+        }
     }
 }
 
@@ -75,6 +83,14 @@
 
         &.product {
             margin-left: 700px;
+        }
+    
+        &.user {
+            margin-left: 290px;
+        }
+
+        &.admin {
+            margin-left: 240px;
         }
     }
     
@@ -113,6 +129,10 @@
         &.product {
             margin-left: 700px;
         }
+
+        &.user {
+            margin-left: 300px;
+        }
     }
 
     .App {
@@ -144,6 +164,14 @@
         &.product {
             margin-left: 600px;
         }
+
+        &.user {
+            margin-left: 250px;
+        }
+
+        &.admin {
+            margin-left: 200px;
+        }
     }
 }
 
@@ -151,6 +179,14 @@
     table {
         &.product {
             margin-left: 400px;
+        }
+
+        &.user {
+            margin-left: 0px;
+        }
+
+        &.admin {
+            margin-left: 0px;
         }
     }
 }

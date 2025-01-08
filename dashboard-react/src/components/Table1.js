@@ -80,8 +80,7 @@ export default function Table1({ type, showBy, showMostPopular }) {
 
         if (data) {
             setFetchedData(data);
-            setPage(value)
-            console.log(page)
+            setPage(value);
         }
     } 
 
@@ -93,6 +92,7 @@ export default function Table1({ type, showBy, showMostPopular }) {
         return `${day}.${month}.${year}`;
     }
     console.log(fetchedData)
+
   return (
     <>
     
@@ -127,12 +127,12 @@ export default function Table1({ type, showBy, showMostPopular }) {
                                         ) : column === "createdAt" || column === "updatedAt" ? formatDate(item[column]) : (item[column] || (index + 1 + (page - 1) * showBy))}
                                     </td>
                                 ))
-                            } 
+                            }  
 
                             <td className='actions'>
                                 {(type === "product" || type === "admin" || type === "user") && <div><Link to={`/${type}/${item._id}`}><RiEyeFill /></Link></div>}
                                 
-                                <div><Link to={`/${type}/${item._id}/edit`}><RiEditFill /></Link></div>
+                                {type !== "user" && type !== "admin" && <div><Link to={`/${type}/${item._id}/edit`}><RiEditFill /></Link></div>}
                                 
                                 <div onClick={() => {
                                     setSelectedId(item._id);

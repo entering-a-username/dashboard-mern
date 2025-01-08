@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import { Checkbox, Pagination, Breadcrumbs, Rating } from '@mui/material';
 
+import Chart from "../components/charts/Chart";
+import Table1 from "../components/Table";
+
 import { columnsInfo } from "../info/columns";
 
 import { Link, useParams } from 'react-router-dom';
@@ -14,6 +17,8 @@ export default function Single() {
   const [fetchedData, setFetchedData] = useState([]);
   const [fetchedCategory, setFetchedCategory] = useState("");
   const [fetchedSubcategories, setFetchedSubcategories] = useState([]);
+  const [fetchedTransactions, setFetchedTransactions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   function capitalize(string) {
     return String(string).charAt(0).toUpperCase() + String(string).slice(1);
@@ -21,12 +26,20 @@ export default function Single() {
 
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch(`http://localhost:3030/api/${type}/${id}`);
-      const data = await res.json();
 
-      console.log(data)
+      try {
+        setLoading(true);
+        const res = await fetch(`http://localhost:3030/api/${type}/${id}`);
+        const data = await res.json();
 
-      setFetchedData(data);
+        console.log(data)
+
+        setFetchedData(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
 
       // const resCat = await fetch(`http://localhost:3030/api/category/${data.category[0]}`);
       // const dataCat = await resCat.json();
@@ -34,7 +47,7 @@ export default function Single() {
     }
 
     fetchData();
-  }, []);
+  }, [type, id]);
 
   
   function formatDate(d) {
@@ -56,6 +69,23 @@ export default function Single() {
 
   const ratings = {5: 65, 4: 15, 3: 5, 2: 7, 1: 8};
   const percentages = calculatePerc(ratings, 100);
+
+  if (loading) {
+    return (
+      <div className='list-page'>
+        <div className="loading">Loading...</div>
+      </div> 
+    )
+  }
+
+  if (!fetchedData) {
+    return (
+      <main className="list-page">
+        <div className="error-message">Failed to load data.</div>
+      </main>
+    );
+  }
+
   return (
     <>
     
@@ -73,7 +103,8 @@ export default function Single() {
         </div>
 
 
-        <div className="bottom single-bottom">
+        {
+        type === "product" && <div className="bottom single-bottom">
             <div className="top-2">
               <div className="left">
                 <h1>{ capitalize(type) } Gallery</h1>
@@ -87,7 +118,7 @@ export default function Single() {
               <div className="right">
                 <h1>{ capitalize(type) } Details</h1>
 
-                <span className="title">{fetchedData.name} Formal suits for men weeding slim fit 3 piece dress</span>
+                <span className="title">{fetchedData.name}</span>
 
                 <div className="icon">
                   <RiShoppingBag2Line />
@@ -227,52 +258,76 @@ export default function Single() {
                 </form>
             </div>
         </div>
+        }
+
+        {
+          type === "user" && 
+          <div className="bottom single-bottom user">
+            <h1>User Information</h1>
+
+            <div className="top-2">
+              
+              <div className="left">
+          
+                <div className="img">
+                  <img src={fetchedData.icons} alt="" />
+                </div>
+                {/* zoom images etc */}
+              </div>
+
+              <div className="right">
+                
+                <span className="title">{fetchedData.name}</span>
+                <div className="icon">
+                  <span>Email: {fetchedData.email}</span>
+                </div>
+
+                <div className="icon">
+                  <span>Phone Number: {fetchedData.phoneNumber}</span>
+                </div>
+
+                <div className="icon">
+                  <span>{fetchedData.city}, {fetchedData.country}</span>
+                </div>
+
+                <div className="icon">
+                  <span>Occupation: {fetchedData.occupation}</span>
+                </div>
+
+                <div className="icon">
+                  <span>Role: {fetchedData.role}</span>
+                </div>
+
+                <div className="icon">
+                  <span>{fetchedData.transactions?.length} Transactions</span>
+                </div>
+                <div className="icon">
+                  <span>Joined {formatDate(fetchedData.createdAt)}</span>
+                </div>
+  
+              </div>
+            </div>
+
+            <div className="bottom-2">
+
+              
+
+              <div>
+                <Chart aspect={3 / 1} title="User Spending (last 6 months)" />
+              </div>
+
+              <div>
+                <h1>Latest Transactions</h1>
+                <Table1 />
+              </div>
+
+              
+            </div>
+          </div>
+        }
 
 
     </main>
     </>
-    // <div className="single">
-      
-    //   <div className="single-container">
-        
-    //     <div className="top">
-
-    //       <div className="left">
-    //         <h1 className="title">Information</h1>
-    //         <div className="item">
-    //           <img src="https://picsum.photos/200/300" alt="" />
-    //           <div className="details">
-    //             <h1 className="item-title">Jane Doe</h1>
-    //             <div className="detail-item">
-    //               <span className="item-key">Email:</span>
-    //               <span className='item-value'>janedoe@gmial.com</span>
-    //             </div>
-
-    //             <div className="detail-item">
-    //               <span className="item-key">Phone:</span>
-    //               <span className='item-value'>+123456789</span>
-    //             </div>
-
-    //             <div className="detail-item">
-    //               <span className="item-key">Country:</span>
-    //               <span className='item-value'>Norway</span>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-
-    //       <div className="right">
-    //         <Chart aspect={3 / 1} title="User Spending (last 6 months)" />
-    //       </div>
-    //     </div>
-
-    //     <div className="bottom">
-    //       <h1 className="title">Last Transactions</h1>
-    //       <div className="list">
-    //         <Table1 />
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   )
 }

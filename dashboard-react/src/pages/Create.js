@@ -161,7 +161,7 @@ export default function Create() {
                 navigate(`/list/${type}`);
                 // flash
             }
-        }   
+        }
     }
 
 

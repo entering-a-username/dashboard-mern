@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { RiGroupLine, RiOrderPlayLine, RiArrowUpSLine, RiArrowDownSLine, RiWallet2Line, RiScalesLine } from "@remixicon/react";
 
 export default function Widgets({ type }) {

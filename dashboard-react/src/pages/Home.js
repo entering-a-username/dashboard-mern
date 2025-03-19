@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Widget from '../components/Widget';
 import Featured from '../components/charts/Featured';
@@ -8,6 +8,25 @@ import BarChart from '../components/charts/BarChart';
 import ProgressChart from '../components/charts/ProgressChart';
 
 export default function Home() {
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [fetchedOrders, setFetchedOrders] = useState([]);
+
+    useEffect(() => {
+        async function fetchData() {   
+            setIsLoading(true);
+            const res = await fetch(`http://localhost:3030/api/orders?showBy=6`);
+            const data = await res.json();
+
+            setFetchedOrders(data.data);
+            setIsLoading(false);
+        }
+        fetchData();
+    }, []);
+
+    if (isLoading) {
+        return <h1>Loading..</h1>
+    }
     
   return (
     <div className="home">
@@ -36,7 +55,7 @@ export default function Home() {
 
             <div className="list-container">
                 <div className="list-title">Latest Transactions</div>
-                <Table />
+                <Table data={fetchedOrders} />
             </div>
             
         </div>

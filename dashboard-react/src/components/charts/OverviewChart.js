@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+
 import { ResponsiveLine } from "@nivo/line";
 import { useStateContext } from '../../ContextProvider';
 
@@ -10,13 +11,9 @@ export default function OverviewChart({view, data}) {
 
         const { monthlyData } = data[0];
 
-        const totalSalesLine = { id: "totalSales",
-            // color
-            data: [],};
+        const totalSalesLine = { id: "totalSales", data: [],};
+        const totalUnitsLine = { id: "totalUnits", data: [],};
 
-        const totalUnitsLine = {id: "totalUnits", data: [],};
-
-        // algorithms
         if (monthlyData) {
             Object.values(monthlyData).reduce((acc, { month, totalSales, totalUnits }) => {
                 const currentSales = acc.sales + totalSales;
@@ -33,7 +30,7 @@ export default function OverviewChart({view, data}) {
 
     }, [data]);
 
-    // if (!data) return "Loading..."
+    if (!data) return "Loading..."
 
   return (
     <ResponsiveLine

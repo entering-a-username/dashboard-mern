@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Link from "@mui/material/Link";
 
 import Table1 from '../components/Table1';
 
 import { Breadcrumbs, Checkbox, Select, MenuItem, FormControlLabel } from '@mui/material';
-
 import { RiHome2Fill } from '@remixicon/react';
+import Link from "@mui/material/Link";
 
 export default function ListSec() {
     const { type } = useParams();
@@ -23,7 +22,7 @@ export default function ListSec() {
     }
 
   return (
-    <>
+    <> 
 
     <main className='list-page'>
         <div className="top">
@@ -42,7 +41,7 @@ export default function ListSec() {
         <div className="bottom">
             <div className="info">
                 <h1>All {type === "category" ? "Categories" : type === "subcategory" ? "Sub Categories" : `${type}s`}</h1>
-                {type !== "user" && <button className="add-btn"><Link href={`/${type}/create`}>Add new {type}</Link></button>}
+                {type !== "user" && type !== "order" && <button className="add-btn"><Link href={`/${type}/create`}>Add new {type}</Link></button>}
                 
                 <div className="filter">
                     <div className="left">
@@ -70,7 +69,6 @@ export default function ListSec() {
                     <Table1 type={type} showBy={showBy} showMostPopular={showMostPopular} />
                     </div>
                 </div>
-
             </div>
         </div>
     </main>

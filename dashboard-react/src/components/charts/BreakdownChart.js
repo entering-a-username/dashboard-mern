@@ -1,9 +1,9 @@
 import React from 'react';
+
 import { ResponsivePie } from "@nivo/pie";
 import { Box } from "@mui/material";
 
 export default function BreakdownChart({ formattedData }) {
-  
   return (
     <Box height="100%" width={undefined} position="relative">
             <ResponsivePie
@@ -57,7 +57,6 @@ export default function BreakdownChart({ formattedData }) {
             transform: "translate(-50%, -100%)",
           }}
         >
-        
           </Box>
       </Box>
   )

@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {geoData} from "../info/geoData";
-import {ResponsiveChoropleth} from "@nivo/geo";
-import {Box, useTheme} from "@mui/material";
+
+import { geoData } from "../info/geoData";
+import { ResponsiveChoropleth } from "@nivo/geo";
+import { Box, useTheme } from "@mui/material";
 
 export default function Geography() {
     const [fetchedData, setFetchedData] = useState([]);
     const theme = useTheme();
-    
 
     useEffect(() => {
         async function fetchData() {
@@ -101,7 +101,6 @@ export default function Geography() {
                 ]}
               />
             ) : <h1>Loading...</h1>}
-
         </Box>
     </Box>
   )

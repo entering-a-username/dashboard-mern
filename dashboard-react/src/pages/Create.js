@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { RiHome2Fill, RiUpload2Line, RiCloseLine } from '@remixicon/react';
 import { Breadcrumbs, Checkbox, Link, Select, MenuItem, FormControlLabel, ListItemText } from '@mui/material';
-import { columnsInfo } from "../info/columns";
+
 
 export default function Create() {
     const { type } = useParams();
@@ -19,9 +19,24 @@ export default function Create() {
 
     const [category, setCategory] = useState([]);
     const [subcategory, setSubcategory] = useState([]);
+    const [countries, setCountries] = useState([]);
     const [size, setSize] = useState([]);
     const [media, setMedia] = useState([]);
 
+    useEffect(() => {
+        const URL = "https://countriesnow.space/api/v0.1/countries/";
+
+        async function getCountry(url) {
+            setCountries((await (await fetch(url)).json()).data);
+        }
+
+        if (type === "product") {
+            getCountry(URL)
+        }
+    }, [type]);
+
+    const [selectedCountry] = useState("");
+    const [isOpenCountry, setIsOpenCountry] = useState(false);
 
     const [fetchedSubcategories, setFetchedSubcategories] = useState([]);
     const [fetchedCategories, setFetchedCategories] = useState([]);
@@ -45,8 +60,8 @@ export default function Create() {
 
     useEffect(() => {
         async function fetchSubCat() {
-            const res = await fetch(`http://localhost:3030/api/subcategory`);
-            const res1 = await fetch(`http://localhost:3030/api/category`);
+            const res = await fetch(`http://localhost:3030/api/subcategory?showBy=100`);
+            const res1 = await fetch(`http://localhost:3030/api/category?showBy=100`);
             const data1 = await res1.json();
             const data = await res.json();
 
@@ -91,30 +106,17 @@ export default function Create() {
 
         const fd = new FormData();
 
+        if (mediaInputRef.current.files.length > 0) {
+            Array.from(mediaInputRef.current.files).forEach(file => {
+                fd.append("files", file);
+            })
+        }
+
         if (type === "category") {
             fd.append("name", form.current.name.value);
             fd.append("subcategory", subcategory);
             fd.append("color", form.current.color.value);
-
-            if (mediaInputRef.current.files.length > 0) {
-                Array.from(mediaInputRef.current.files).forEach(file => {
-                    fd.append("files", file);
-                })
-            }
-
-            const res = await fetch("http://localhost:3030/api/category/create", {
-                method: "POST",
-                body: fd,
-            }) 
-
-            const data = await res.json();
-            console.log(data)
-            if (data.success) {
-                navigate(`/list/${type}`);
-                // flash
-            }
         } else if (type === "product") {
-            console.log(JSON.stringify(size))
             fd.append("name", form.current.name.value);
             fd.append("description", form.current.description.value);
             fd.append("brand", form.current.brand.value);
@@ -124,50 +126,23 @@ export default function Create() {
             fd.append("subcategory", subcategory);
             fd.append("countInStock", form.current.stock.value);
             fd.append("sizes", size);
-
-            if (mediaInputRef.current.files.length > 0) {
-                Array.from(mediaInputRef.current.files).forEach(file => {
-                    fd.append("files", file);
-                })
-            }
-    
-            const res = await fetch("http://localhost:3030/api/product/create", {
-                method: "POST",
-                body: fd,
-            }) 
-
-            const data = await res.json();
-            if (data.success) {
-                navigate(`/list/${type}`);
-            }
-    
         } else if (type === "subcategory") {
             fd.append("name", form.current.name.value);
+        }
 
-            if (mediaInputRef.current.files.length > 0) {
-                Array.from(mediaInputRef.current.files).forEach(file => {
-                    fd.append("files", file);
-                })
-            }
+        const res = await fetch(`http://localhost:3030/api/${type}/create`, {
+            method: "POST",
+            body: fd,
+        }) 
+        const data = await res.json();
 
-            const res = await fetch("http://localhost:3030/api/subcategory/create", {
-                method: "POST",
-                body: fd,
-            }) 
-
-            const data = await res.json();
-
-            if (data.success) {
-                navigate(`/list/${type}`);
-                // flash
-            }
+        if (data.status === "success") {
+            navigate(`/list/${type}`)
         }
     }
 
-
   return (
     <>
-    
     <main className='list-page'>
         <div className="top">
             <h1>Create {capitalize(type)}</h1>
@@ -302,6 +277,12 @@ export default function Create() {
                     )
                 }
 
+                {
+                    type === "banner" && (
+                        <form ref={form} className="inputs"></form>
+                    )
+                }
+
             </div>
         </div>
 
@@ -324,8 +305,6 @@ export default function Create() {
             </div>
             <button type="submit" onClick={submitData}>Save Changes</button>
         </div>
-
-
     </main>
     </>
   )

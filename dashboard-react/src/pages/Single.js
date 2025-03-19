@@ -1,49 +1,56 @@
 import React, { useEffect, useState } from 'react';
-
-import { Checkbox, Pagination, Breadcrumbs, Rating } from '@mui/material';
-
-import Chart from "../components/charts/Chart";
-import Table1 from "../components/Table";
-
-import { columnsInfo } from "../info/columns";
-
 import { Link, useParams } from 'react-router-dom';
 
-import { RiEyeFill, RiCheckboxFill, RiShoppingBag2Line, RiCornerUpLeftLine, RiEditFill, RiDeleteBinFill, RiHome2Fill } from '@remixicon/react';
+import { Breadcrumbs, Rating } from '@mui/material';
+
+import Chart from "../components/charts/Chart";
+
+import { RiCheckboxFill, RiShoppingBag2Line, RiCornerUpLeftLine, RiHome2Fill } from '@remixicon/react';
 
 export default function Single() {
   const { type, id } = useParams();
 
   const [fetchedData, setFetchedData] = useState([]);
-  const [fetchedCategory, setFetchedCategory] = useState("");
-  const [fetchedSubcategories, setFetchedSubcategories] = useState([]);
-  const [fetchedTransactions, setFetchedTransactions] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   function capitalize(string) {
     return String(string).charAt(0).toUpperCase() + String(string).slice(1);
   }
 
+  const events = [
+    { status: "Delivered", description: "Delivered, in/at mailbox", timestamp: new Date(new Date(fetchedData.expectedArrival).getTime() + 10 * 24 * 45 * 58 * 250).toLocaleString() },
+    { status: "Out for delivery", description: "Out for delivery", timestamp: new Date(new Date(fetchedData.expectedArrival).getTime() + 10 * 24 * 45 * 58 * 100).toLocaleString() },
+    { status: "In transit", description: "Arrived at post office", timestamp: new Date(new Date(fetchedData.expectedArrival).getTime() + 1 * 24 * 55 * 58 * 100).toLocaleString() },
+    { status: "Shipped", description: "Shipped", timestamp: new Date(new Date(fetchedData.createdAt).getTime() + 1 * 24 * 45 * 58 * 800).toLocaleString() },
+    { status: "Processing", description: "Order confirmed, awaiting shipment", timestamp: new Date(fetchedData.createdAt).toLocaleString() },
+  ];
+
   useEffect(() => {
     async function fetchData() {
-
       try {
         setLoading(true);
         const res = await fetch(`http://localhost:3030/api/${type}/${id}`);
         const data = await res.json();
 
-        console.log(data)
+        if (type === "product") {
+          const res1 = await fetch(`http://localhost:3030/api/review/${id}`);
+          const data1 = await res1.json();
+
+          setReviews(data1.data);
+        }
+
+        if (type === "order") {
+          setFetchedData(data.data);
+          setLoading(false);
+          return;
+        }
 
         setFetchedData(data);
+        setLoading(false);
       } catch (err) {
         console.error(err);
-      } finally {
-        setLoading(false);
       }
-
-      // const resCat = await fetch(`http://localhost:3030/api/category/${data.category[0]}`);
-      // const dataCat = await resCat.json();
-
     }
 
     fetchData();
@@ -108,11 +115,9 @@ export default function Single() {
             <div className="top-2">
               <div className="left">
                 <h1>{ capitalize(type) } Gallery</h1>
-
                 <div className="img">
                   <img src={fetchedData.icons} alt="" />
                 </div>
-                {/* zoom images etc */}
               </div>
 
               <div className="right">
@@ -140,7 +145,7 @@ export default function Single() {
                   <RiShoppingBag2Line />
                   <div className="info">
                     <span>Category</span>
-                    {/* <span>{fetchedData?.categories[0]}</span> */}
+                    <span>{fetchedData?.categories[0]}</span>
                   </div>
                 </div>
 
@@ -221,30 +226,29 @@ export default function Single() {
                 </div>
 
                 <div className="reviews">
+                {
+                          reviews?.slice(-5).map((review, index) => (
+                            <div className="card" key={index}>
+                              <div>
+                                <img src={review.icon} alt="" />
+                                <h1>{review.name}</h1>
+                                <span>{new Date(review.createdAt).toLocaleDateString('en-US', {
+                                  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                                })}</span>
+                              </div>
+                            
+                              <div>
+                                <Rating value={review.rating} className='top' readOnly name="read-only" />
+                                <p>{review.body}</p>
+                              </div>
 
-                  <div className="review-card">
-                    <div className="top">
-                      <div className="info">
-                        <img src="" alt="" />
-                        <div>
-                          <span>Miron Mahmud</span>
-                          <span>25 minutes ago</span>
-                        </div>
-                      </div>
-                      <div className="action">
-                        <div className="rating">
-
-                        </div>
-
-                        <div className="reply">
-                          <RiCornerUpLeftLine />
-                          <button>Reply</button>
-                        </div>
-                      </div>
-
-                      <p>COMMENT</p>
-                    </div>
-                  </div>
+                              <div className="reply">
+                                <RiCornerUpLeftLine />
+                                <button>Reply</button>
+                              </div>
+                            </div>
+                          ))
+                        }
                 </div>
 
                 <form className="review-reply">
@@ -261,18 +265,17 @@ export default function Single() {
         }
 
         {
-          type === "user" && 
+          fetchedData.length !== 0 && type === "user" && 
           <div className="bottom single-bottom user">
             <h1>User Information</h1>
 
             <div className="top-2">
               
               <div className="left">
-          
+           
                 <div className="img">
-                  <img src={fetchedData.icons} alt="" />
+                  <img src={fetchedData.icon} alt="" />
                 </div>
-                {/* zoom images etc */}
               </div>
 
               <div className="right">
@@ -310,23 +313,85 @@ export default function Single() {
 
             <div className="bottom-2">
 
-              
-
               <div>
                 <Chart aspect={3 / 1} title="User Spending (last 6 months)" />
               </div>
-
-              <div>
-                <h1>Latest Transactions</h1>
-                <Table1 />
-              </div>
-
-              
             </div>
           </div>
         }
 
+        {
+          type === "order" &&
+          <section className="bottom single-bottom order">
+            <div className="card">
+                <h2>#{fetchedData.trackingNumber} Status: {fetchedData.status}</h2>
+                {fetchedData.status !== "delivered" && <h4>Expected arrival {new Date(fetchedData.expectedArrival).toLocaleDateString()}</h4>}
+                {fetchedData.status === "delivered" && <h5 style={{color: "green"}}>The order has been delivered successfully</h5>}
 
+
+                <div className="timeline">
+                    {events.map((e, index) => (
+                        <div key={index}>
+                            <div className="line">
+                                <div className="circle"></div>
+                                <div className="info">
+                                    <h3>{`${e.status} - ${e.description}`}</h3>
+                                    <span>{e.timestamp}</span>
+                                </div>
+                            </div>
+                            {index < events.length - 1  && (
+                                <div className="dots">
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                    <div className="dot"></div>
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+                  
+                <div className="shipment-info">
+                    <h1>Shipment Information</h1>
+                    <div>
+                        <span><b>Package:</b> 1</span>
+                        <span><b>Status:</b> {fetchedData.status}</span>
+                        <span><b>Destination:</b> {fetchedData?.address.country} </span>
+                        <span><b>Carrier:</b> DHL</span>
+                        <span><b>Type of shipment:</b> Van move</span>
+                        <span><b>Weight:</b> 500g</span>
+                        <span><b>Shipment mode:</b> Land shipping</span>
+                        <span><b>Carrier reference No:</b> 123hjk</span>
+                        <span><b>Product:</b> Clothes</span>
+                        <span><b>Qty: </b>{fetchedData?.items.length - 2}</span>
+                        <span><b>Payment mode:</b> Card</span>
+                        {fetchedData.deliveryMethod === "flat" && <span><b>Expected delivery date:</b> {new Date(fetchedData.expectedArrival).toLocaleDateString()}</span>}
+                        {fetchedData.deliveryMethod !== "flat" && <span><b>Pick-up date:</b> {new Date(fetchedData.expectedArrival).toLocaleDateString()}</span>}
+                        {fetchedData.deliveryMethod !== "flat" && <span><b>Pick-up time:</b> 14:00 PM</span>}
+                    </div>
+                </div>
+
+                <div className="customer">
+                    <h1>Customer Information</h1>
+                    <div>
+                        <span><b>Contact information:</b> <br /> {fetchedData.customer.name} <br /> {fetchedData.customer.email} <br /> {fetchedData.customer.phone} </span>
+                        <span><b>Payment method:</b> <br /> Card - ${fetchedData.amount}</span>
+                        <span><b>Shipping address:</b> <br /> {fetchedData.address.line2 + ", " + fetchedData.address.city} <br /> {fetchedData.address.country} ({fetchedData.address.postal_code}) </span>
+                        <span><b>Billing address:</b> <br /> {fetchedData.customer.name}'s card</span>
+                    </div>
+                </div>
+
+                <div className="items">
+                    <h1>Items</h1>
+
+                    <div>
+                        {fetchedData.items.slice(0,-2).map((item, index) => (
+                            <div key={index}>{item.name} ------- ${item.price} x{item.quantity}</div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+          </section>
+        }
     </main>
     </>
   )

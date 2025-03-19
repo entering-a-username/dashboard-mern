@@ -8,8 +8,6 @@ export default function Edit() {
     const { type, id } = useParams();
     const navigate = useNavigate();
 
-    //  loading for img appear
-
     function capitalize(string) {
         return String(string).charAt(0).toUpperCase() + String(string).slice(1);
     }
@@ -21,7 +19,7 @@ export default function Edit() {
     const [subcategory, setSubcategory] = useState([]);
     const [fetchedSubcategories, setFetchedSubcategories] = useState([]);
     const [size, setSize] = useState([]);
-    // const [fetchedSize, setFetchedSize] = useState([]);
+    
     const [media, setMedia] = useState([]);
     const [name, setName] = useState("");
     const [color, setColor] = useState("");
@@ -138,26 +136,16 @@ export default function Edit() {
 
         const fd = new FormData();
 
+        if (mediaInputRef.current.files.length > 0) {
+            Array.from(mediaInputRef.current.files).forEach(file => {
+                fd.append("files", file);
+            })
+        }
+
         if (type === "category") {
             fd.append("name", form.current.name.value);
             fd.append("subcategory", subcategory);
             fd.append("color", form.current.color.value);
-    
-            if (mediaInputRef.current.files.length > 0) {
-                Array.from(mediaInputRef.current.files).forEach(file => {
-                    fd.append("files", file);
-                })
-            }
-
-            const res = await fetch(`http://localhost:3030/api/category/${id}`, {
-                method: "PUT",
-                body: fd,
-            }) 
-
-            const data = await res.json();
-            if (data.success) {
-                navigate(`/list/${type}`);
-            }
         } else if (type === "product") {
             fd.append("name", form.current.name.value);
             fd.append("description", form.current.description.value);
@@ -168,41 +156,18 @@ export default function Edit() {
             fd.append("subcategory", subcategory);
             fd.append("countInStock", form.current.stock.value);
             fd.append("sizes", size);
-
-            if (mediaInputRef.current.files.length > 0) {
-                Array.from(mediaInputRef.current.files).forEach(file => {
-                    fd.append("files", file);
-                })
-            }
-      
-            const res = await fetch(`http://localhost:3030/api/product/${id}`, {
-                method: "PUT",
-                body: fd,
-            }) 
-
-            const data = await res.json();
-            if (data.success) {
-                navigate(`/list/${type}`);
-            }
-    
         } else if (type === "subcategory") {
             fd.append("name", form.current.name.value);
-            
-            if (mediaInputRef.current?.files.length > 0) {
-                Array.from(mediaInputRef.current.files).forEach(file => {
-                    fd.append("files", file);
-                }) 
-            }
+        }
 
-            const res = await fetch(`http://localhost:3030/api/subcategory/${id}`, {
-                method: "PUT",
-                body: fd,
-            });
-            
-            const data = await res.json();
-            if (data.success) {
-                navigate(`/list/${type}`);
-            }
+        const res = await fetch(`http://localhost:3030/api/${type}/${id}`, {
+            method: "PUT",
+            body: fd,
+        }) 
+
+        const data = await res.json();
+        if (data.success) {
+            navigate(`/list/${type}`);
         }
     }
   return (
@@ -273,11 +238,6 @@ export default function Edit() {
                                 <input type="text" onChange={(e) => setPrice(e.target.value)} placeholder={fetchedData.price} name='price' />
                             </div>
 
-                            {/* <div className="small">
-                                <label htmlFor="old-price">OLD PRICE</label>
-                                <input type="text" name="old-price" />
-                            </div> */}
-
                             <div className="small">
                                 <label htmlFor="stock">PRODUCT STOCK</label>
                                 <input type="text" onChange={(e) => setInStock(e.target.value)} placeholder={fetchedData.countInStock} name='stock' />
@@ -300,13 +260,6 @@ export default function Edit() {
                                         sizes.map((size, index) => (
                                             <FormControlLabel key={index} control={<Checkbox checked={isCheckedSize} onChange={handleCheckbox} name={size} />} label={size}></FormControlLabel>
                                         ))
-                                        // sizes.map((size1, ind) => {
-                                        //     size?.map((si, index) => {
-                                        //         if (size1 === si) {
-                                        //             <FormControlLabel key={ind} control={<Checkbox checked={true} onChange={handleCheckbox} name={si} />} label={si}></FormControlLabel>
-                                        //         }
-                                        //     })
-                                        // })
                                     }
                                 </div>
                             </div>
@@ -340,7 +293,6 @@ export default function Edit() {
                                 <label htmlFor="color">COLOR</label>
                                 <input type="text" onChange={(e) => setColor(e.target.value)} placeholder={fetchedData.color} name='color' />
                             </div>
-
                         </form>
                     )
                 }

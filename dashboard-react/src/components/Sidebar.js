@@ -2,7 +2,8 @@ import React from 'react';
 
 import { useStateContext } from '../ContextProvider';
 import { useLocation } from 'react-router-dom';
-import {RiGroup2Fill, RiAdminFill, RiPieChart2Fill, RiEarthFill, RiBarChart2Fill, RiDashboardFill, RiProductHuntFill, RiOrderPlayFill} from "@remixicon/react";
+
+import {RiGroup2Fill, RiAdminFill, RiTruckFill, RiPieChart2Fill, RiEarthFill, RiBarChart2Fill, RiDashboardFill, RiProductHuntFill, RiOrderPlayFill} from "@remixicon/react";
 
 export default function Sidebar({className}) {
   const { changeTheme, palette } = useStateContext();
@@ -60,6 +61,15 @@ export default function Sidebar({className}) {
             <a href="/list/admin"><span>Admins</span></a>
           </li>
 
+          <li className={`${location.pathname === '/list/banner' ? 'active' : ''}`}>
+            <RiAdminFill color={palette.blue_accent[400]} className="icon" />
+            <a href="/list/banner"><span>Banners</span></a>
+          </li>
+
+          <li className={`${location.pathname === '/list/order' ? 'active' : ''}`}>
+            <RiTruckFill color={palette.blue_accent[400]} className="icon" />
+            <a href="/list/order"><span>Orders</span></a>
+          </li>
 
           <p className="title">STATS</p>
           <li className={`${location.pathname === '/overview' ? 'active' : ''}`}>

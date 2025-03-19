@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Checkbox, Dialog, DialogActions, Pagination, Slide } from '@mui/material';
+import { Dialog, DialogActions, Pagination, Slide } from '@mui/material';
 
 import { columnsInfo } from "../info/columns";
 
@@ -21,11 +21,19 @@ export default function Table1({ type, showBy, showMostPopular }) {
     useEffect(() => {
         async function fetchData() {
             try {
+                if (type === "order") {
+                    const res = await fetch(`http://localhost:3030/api/${type}s?showBy=${showBy}`);
+                    const data = await res.json();
+                    
+                    setFetchedData(data);
+                    setPage(data.page);
+                    return;
+                }
                 const res = await fetch(`http://localhost:3030/api/${type}/?showBy=${showBy}`);
                 const data = await res.json();
                 
                 setFetchedData(data);
-                setPage(data.page)
+                setPage(data.page);
                 
             } catch (error) {
               console.error(error);
@@ -68,7 +76,9 @@ export default function Table1({ type, showBy, showMostPopular }) {
             setPage(data.page);
         }
 
-        showMostPopularFunc();
+        if (type !== "order") {
+            showMostPopularFunc();
+        }
     }, [showMostPopular]);
     
 
@@ -76,7 +86,6 @@ export default function Table1({ type, showBy, showMostPopular }) {
     async function handleChange(e, value) {
         const res = await fetch(`http://localhost:3030/api/${type}?page=${value}&showBy=${showBy}`);
         const data = await res.json();
-        // setIsSnackbarOpen(true);
 
         if (data) {
             setFetchedData(data);
@@ -91,7 +100,6 @@ export default function Table1({ type, showBy, showMostPopular }) {
         const year = date.getFullYear();
         return `${day}.${month}.${year}`;
     }
-    console.log(fetchedData)
 
   return (
     <>
@@ -116,28 +124,43 @@ export default function Table1({ type, showBy, showMostPopular }) {
                                 columns.fields?.map(column => (
                                     <td key={column}>
                                         {column === "icons" ? (
-                                            // <img src={item[column]} />
-                                            <img src="https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg" alt="" />
+                                            <img src={item[column][0]} alt="" />
                                         ) : column === "subcategories" || column === "categories" || column === "sizes" ? (
                                             item[column]?.map((col, index) => (
                                                 <>
                                                     {col} <br />
                                                 </>
                                             ))
-                                        ) : column === "createdAt" || column === "updatedAt" ? formatDate(item[column]) : (item[column] || (index + 1 + (page - 1) * showBy))}
+                                        ) : column === "createdAt" || column === "updatedAt" || column === "expectedArrival" ? formatDate(item[column]) 
+                                        : column === "address" ? (
+                                            <>
+                                                <span>{item[column]?.line1}, {item[column]?.line2}, {item[column]?.city}, <br /> {item[column]?.country}</span>
+                                            </>
+                                        ) : column === "items" ? (
+                                            item[column]?.slice(0, -2).map((col, index) => (
+                                                <>
+                                                    <span key={index}>{col?.name} x{col?.quantity} - ${col?.price}</span> <br />
+                                                </>
+                                            ))
+                                        ) : column === "customer" ? (
+                                            <>
+                                                <span>{item[column]?.name}, {item[column]?.email} <br /> {item[column]?.phone}</span>
+                                            </>
+                                        ) : column === "amount" ? (<><span>${item[column]}</span></>)
+                                        : (item[column] || (index + 1 + (page - 1) * showBy))}
                                     </td>
                                 ))
                             }  
 
                             <td className='actions'>
-                                {(type === "product" || type === "admin" || type === "user") && <div><Link to={`/${type}/${item._id}`}><RiEyeFill /></Link></div>}
+                                {(type === "product" || type === "admin" || type === "user" || type === "order") && <div><Link to={`/${type}/${item._id}`}><RiEyeFill /></Link></div>}
                                 
-                                {type !== "user" && type !== "admin" && <div><Link to={`/${type}/${item._id}/edit`}><RiEditFill /></Link></div>}
+                                {type !== "user" && type !== "order" && type !== "admin" && <div><Link to={`/${type}/${item._id}/edit`}><RiEditFill /></Link></div>}
                                 
-                                <div onClick={() => {
+                                {type !== "order" && <div onClick={() => {
                                     setSelectedId(item._id);
                                     setOpen(true);
-                                }}><RiDeleteBinFill /></div>
+                                }}><RiDeleteBinFill /></div>}
 
                                 <Dialog className='dialog' onClose={handleClose} open={open} TransitionComponent={Transition}>
                                     <h1>Are you sure you want to delete this {type}?</h1>     
